@@ -19,7 +19,7 @@ class BareCustomer {
 
         if ($this->facebook_id)
             $data['facebook_id_hash'] = md5($this->facebook_id);
-		
+
         return $data;
     }
 }
