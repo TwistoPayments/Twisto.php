@@ -10,17 +10,17 @@ class BareOrder {
     public $order_id;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     public $created;
 
     /**
-     * @var Twisto\Address
+     * @var Address
      */
     public $billing_address;
 
      /**
-     * @var Twisto\Address
+     * @var Address
      */
     public $delivery_address;
 
@@ -44,7 +44,9 @@ class BareOrder {
      */
     public $is_returned;
 
-
+    /**
+     * @param array $data
+     */
     public function __construct(array $data) {
         $this->order_id = $data['order_id'];
         $this->created = new \DateTime($data['created']);
@@ -56,6 +58,9 @@ class BareOrder {
         $this->is_returned = $data['is_returned'];
     }
 
+    /**
+     * @return array
+     */
     public function serialize() {
         return array(
             'order_id' => $this->order_id,

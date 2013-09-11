@@ -48,8 +48,10 @@ class OrderItem {
      * @var array
      */
     public $categories;
-    
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data) {
         $this->quantity = $data['quantity'];
         $this->name = $data['name'];
@@ -62,6 +64,9 @@ class OrderItem {
         $this->categories = isset($data['categories']) ? $data['categories'] : null;
     }
 
+    /**
+     * @return array
+     */
     public function serialize() {
         $data = array(
             'quantity' => $this->quantity,

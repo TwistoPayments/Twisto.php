@@ -13,24 +13,40 @@ require_once 'OrderItem.php';
 require_once 'NewOrder.php';
 
 class Twisto {
+    /**
+     * @var string
+     */
     private $public_key;
+
+    /**
+     * @var string
+     */
     private $secret_key;
 
+    /**
+     * @param null|string $public_key
+     */
     public function Twisto($public_key = null) {
         $this->public_key = $public_key;
     }
 
+    /**
+     * @param string $key
+     */
     public function setSecretKey($key) {
         $this->secret_key = $key;
     }
-    
+
+    /**
+     * @param string $key
+     */
     public function setPublicKey($key) {
         $this->public_key = $key;
     }
 
     /**
      * Encrypts data with AES-128-CBC and HMAC-SHA-256
-     * @param $data
+     * @param string $data
      * @return string
      */
     private function encrypt($data) {

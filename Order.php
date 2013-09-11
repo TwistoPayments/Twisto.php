@@ -10,17 +10,17 @@ class Order {
     public $order_id;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     public $created;
 
     /**
-     * @var Twisto\Address
+     * @var Address
      */
     public $billing_address;
     
     /**
-     * @var Twisto\Address
+     * @var Address
      */
     public $delivery_address;
 
@@ -45,11 +45,13 @@ class Order {
     public $is_returned;
     
      /**
-     * @var array
+     * @var OrderItem[]
      */
     public $items;
-    
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data) {
         $this->order_id = $data['order_id'];
         $this->created = new \DateTime($data['created']);
@@ -62,18 +64,24 @@ class Order {
         $this->items = $data['items'];
     }
 
+    /**
+     * @return array
+     */
     public function serialize() {
         $data = array(
             'order_id' => $this->order_id,
             'created' => $this->created->format('c'), // ISO 8601
             'billing_address' => $this->billing_address->serialize(),
-            'delivery_address' => $this->delivery_address->serialize(),
             'total_price_vat' => $this->total_price_vat,
             'is_paid' => ($this->is_paid == 0 ? false : true), 
             'is_delivered' => ($this->is_delivered == 0 ? false : true),
             'is_returned' => ($this->is_returned == 0 ? false : true),
             'items' => array()
-        );    
+        );
+
+        if ($this->delivery_address) {
+            $data['delivery_address'] = $this->delivery_address->serialize();
+        }
         
         foreach ($this->items as $item) {
             $data['items'][] = $item->serialize();

@@ -29,6 +29,9 @@ class Customer {
      */
     public $promo_score;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data) {
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->email = $data['email'];
@@ -37,6 +40,9 @@ class Customer {
         $this->promo_score = isset($data['promo_score']) ? $data['promo_score'] : null;
     }
 
+    /**
+     * @return array
+     */
     public function serialize() {
         $data = array(
             'email' => trim(strtolower($this->email)),

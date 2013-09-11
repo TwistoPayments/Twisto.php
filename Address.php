@@ -34,6 +34,9 @@ class Address {
     */
     public $phones;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data) {
         $this->name = $data['name'];
         $this->street = $data['street'];  
@@ -42,7 +45,10 @@ class Address {
         $this->country = isset($data['country']) ? $data['country'] : null;
         $this->phones = $data['phones']; 
     }
-        
+
+    /**
+     * @return array
+     */
     public function serialize() {
         $data = array(
             'name' => $this->name,

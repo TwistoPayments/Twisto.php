@@ -34,6 +34,9 @@ class BareAddress {
     */
     public $phones;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data) {   
         $this->name = isset($data['name']) ? $data['name'] : null;
         $this->street = isset($data['street']) ? $data['street'] : null;  
@@ -42,7 +45,11 @@ class BareAddress {
         $this->country = isset($data['country']) ? $data['country'] : 'cz';  
         $this->phones_hash = $data['phones']; 
     }
-    
+
+    /**
+     * @param string $phone
+     * @return null|string
+     */
     static private function normalizePhone($phone)
     {
         $phone = preg_replace('/(?<=.)\+/', '', $phone);
@@ -59,7 +66,10 @@ class BareAddress {
 
         return $phone;
     }
-    
+
+    /**
+     * @return array
+     */
     public function serialize() {
         $data = array(
             'name' => $this->name,

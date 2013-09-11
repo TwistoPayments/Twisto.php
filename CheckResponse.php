@@ -3,7 +3,11 @@ namespace Twisto;
 
 
 class CheckResponse {
-    function add($customer, $orders) {
+    /**
+     * @param Customer $customer
+     * @param Order[] $orders
+     */
+    function add(Customer $customer, array $orders) {
         echo json_encode(array(
             'customer' => $customer->serialize(),
             'orders' => array_map(function($order) {
