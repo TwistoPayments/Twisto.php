@@ -71,7 +71,7 @@ class Twisto {
             'customer' => $customer->serialize(),
             'orders' => array_map(function($c) { return $c->serialize(); }, $orders)
         ));
-        return $this->encrypt($payload);
+        return $this->encrypt(gzcompress($payload, 9));
     }
 
     /**
