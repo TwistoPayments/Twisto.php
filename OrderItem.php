@@ -50,6 +50,11 @@ class OrderItem {
     public $categories;
 
     /**
+     * @var string
+     */
+    public $product_id;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data) {
@@ -62,6 +67,7 @@ class OrderItem {
         $this->is_handling = (isset($data['is_handling']) and $data['is_handling'] != 0) ? true : false;
         $this->is_payment = (isset($data['is_payment']) and $data['is_payment'] != 0) ? true : false;
         $this->categories = isset($data['categories']) ? $data['categories'] : null;
+        $this->product_id = isset($data['product_id']) ? $data['product_id'] : null;
     }
 
     /**
@@ -78,6 +84,7 @@ class OrderItem {
             'is_handling' => ($this->is_handling == false ? false : true),
             'is_payment' => ($this->is_payment == false ? false : true),
             'categories' => array(),
+            'product_id' => $this->product_id
         );
 
         if($this->categories) {
