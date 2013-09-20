@@ -33,11 +33,16 @@ class Order {
      * @var bool
      */
     public $is_paid;
+
+    /**
+     * @var bool
+     */
+    public $is_shipped;
      
     /**
      * @var bool
      */
-    public $is_delivered;    
+    public $is_delivered;
     
     /**
      * @var bool
@@ -59,8 +64,9 @@ class Order {
         $this->delivery_address = isset($data['delivery_address']) ? $data['delivery_address'] : null;
         $this->total_price_vat = $data['total_price_vat'];
         $this->is_paid = $data['is_paid'];
-        $this->is_delivered = $data['is_delivered'];
-        $this->is_returned = $data['is_returned'];     
+        $this->is_shipped = $data['is_paid'];
+        $this->is_delivered = isset($data['is_delivered']) ? $data['is_delivered'] : null;
+        $this->is_returned = isset($data['is_returned']) ? $data['is_returned'] : null;
         $this->items = $data['items'];
     }
 
@@ -73,9 +79,10 @@ class Order {
             'created' => $this->created->format('c'), // ISO 8601
             'billing_address' => $this->billing_address->serialize(),
             'total_price_vat' => $this->total_price_vat,
-            'is_paid' => ($this->is_paid == 0 ? false : true), 
-            'is_delivered' => ($this->is_delivered == 0 ? false : true),
-            'is_returned' => ($this->is_returned == 0 ? false : true),
+            'is_paid' => $this->is_paid,
+            'is_shipped' => $this->is_shipped,
+            'is_delivered' => $this->is_delivered,
+            'is_returned' => $this->is_returned,
             'items' => array()
         );
 
