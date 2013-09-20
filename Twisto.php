@@ -1,6 +1,8 @@
 <?php
 namespace Twisto;
 
+define('TWISTO_API_URL', 'https://api.twisto.cz/v1/');
+
 require_once 'BareCustomer.php';
 require_once 'BareOrder.php';
 require_once 'SharedDbResponse.php';
@@ -11,6 +13,7 @@ require_once 'Customer.php';
 require_once 'Order.php';
 require_once 'OrderItem.php';
 require_once 'NewOrder.php';
+require_once 'libs.php';
 
 class Twisto {
     /**
@@ -87,4 +90,21 @@ class Twisto {
         ));
     }
 
+    /**
+     * Send create invoice request to API
+     * @param string $transaction_id
+     * @param Customer $customer
+     * @param Order $order
+     * @return string invoice_id
+     */
+    public function createInvoice($transaction_id, Customer $customer, Order $order) {
+        $data = array(
+            'secret_key' => $this->secret_key,
+            'transaction_id' => $transaction_id,
+            'customer' => $customer->serialize(),
+            'order' => $order->serialize()
+        );
+        $response = post_json(TWISTO_API_URL.$this->public_key.'/invoice/', $data);
+        return $response->invoice_id;
+    }
 }
