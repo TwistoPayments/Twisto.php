@@ -63,16 +63,20 @@ class BareOrder {
      * @return array
      */
     public function serialize() {
-        return array(
+        $data = array(
             'order_id' => $this->order_id,
             'created' => $this->created->format('c'), // ISO 8601
             'billing_address' => $this->billing_address->serialize(),
-            'delivery_address' => $this->delivery_address->serialize(),
             'approx_total_price' => ($this->total_price_vat <= 500 ? 1 : 2),
             'is_paid' => $this->is_paid,
             'is_shipped' => $this->is_shipped,
             'is_delivered' => $this->is_delivered,
             'is_returned' => $this->is_returned,
         );
+
+        if ($this->delivery_address)
+            $data['delivery_address'] = $this->delivery_address->serialize();
+
+        return $data;
     }
 }
