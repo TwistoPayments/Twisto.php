@@ -2,8 +2,6 @@
 
 namespace Twisto;
 
-class TwistoError extends \Exception {};
-
 function post_json($url, $data) {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));

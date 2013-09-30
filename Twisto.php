@@ -3,6 +3,8 @@ namespace Twisto;
 
 define('TWISTO_API_URL', 'https://api.twisto.cz/v1/');
 
+class TwistoError extends \Exception {};
+
 require_once 'BareCustomer.php';
 require_once 'BareOrder.php';
 require_once 'SharedDbResponse.php';
@@ -69,10 +71,11 @@ class Twisto {
      * @param BareOrder[] $orders
      * @return string
      */
-    public function getPrecheckPayload(BareCustomer $customer, array $orders) {
+    public function getPrecheckPayload(BareCustomer $customer, array $orders, $total_price_vat=null) {
         $payload = json_encode(array(
             'customer' => $customer->serialize(),
-            'orders' => array_map(function($c) { return $c->serialize(); }, $orders)
+            'orders' => array_map(function($c) { return $c->serialize(); }, $orders),
+            'total_price_vat' => $total_price_vat
         ));
         return $this->encrypt(gzcompress($payload, 9));
     }
