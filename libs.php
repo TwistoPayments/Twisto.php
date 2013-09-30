@@ -13,19 +13,19 @@ function post_json($url, $data) {
 
     if (curl_errno($curl))
     {
-        throw new TwistoError('Curl error: ' .curl_error($curl));
+        throw new Error('Curl error: ' .curl_error($curl));
     }
 
     $info = curl_getinfo($curl);
     if ($info['http_code'] != 200)
     {
-        throw new TwistoError('API responded with wrong status code ('.$info['http_code'].')');
+        throw new Error('API responded with wrong status code ('.$info['http_code'].')', json_decode($response));
     }
 
     $json = json_decode($response);
     if ($json == null)
     {
-        throw new TwistoError('API responded with invalid JSON');
+        throw new Error('API responded with invalid JSON');
     }
 
     return $json;

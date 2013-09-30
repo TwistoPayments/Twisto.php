@@ -3,8 +3,7 @@ namespace Twisto;
 
 define('TWISTO_API_URL', 'https://api.twisto.cz/v1/');
 
-class TwistoError extends \Exception {};
-
+require_once 'Error.php';
 require_once 'BareCustomer.php';
 require_once 'BareOrder.php';
 require_once 'SharedDbResponse.php';
