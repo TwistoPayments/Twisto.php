@@ -30,7 +30,7 @@ class BareCustomer {
             'email_hash' => md5(trim(strtolower($this->email))),
         );
 
-        if ($this->facebook_id)
+        if ($this->facebook_id !== null)
             $data['facebook_id_hash'] = md5($this->facebook_id);
 
         return $data;

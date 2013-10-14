@@ -74,8 +74,14 @@ class BareOrder {
             'is_returned' => $this->is_returned,
         );
 
-        if ($this->delivery_address)
+        if ($this->delivery_address !== null)
             $data['delivery_address'] = $this->delivery_address->serialize();
+
+        if ($this->is_delivered !== null)
+            $data['is_delivered'] = $this->is_delivered;
+
+        if ($this->is_returned !== null)
+            $data['is_returned'] = $this->is_returned;
 
         return $data;
     }

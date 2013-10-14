@@ -30,7 +30,7 @@ class NewOrder {
      */
     public function __construct(array $data) {
         $this->billing_address = $data['billing_address'];
-        $this->delivery_address = isset($data['delivery_address']) ? $data['delivery_address'] : null;  
+        $this->delivery_address = isset($data['delivery_address']) ? $data['delivery_address'] : null;
         $this->items = $data['items'];
         $this->total_price_vat = $data['total_price_vat'];
     }
@@ -45,7 +45,7 @@ class NewOrder {
             'items' => array()
         );
 
-        if ($this->delivery_address) {
+        if ($this->delivery_address !== null) {
             $data['delivery_address'] = $this->delivery_address->serialize();
         }
         

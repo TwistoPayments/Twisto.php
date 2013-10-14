@@ -45,18 +45,20 @@ class Customer {
      */
     public function serialize() {
         $data = array(
-            'email' => trim(strtolower($this->email)),
-            'promo_score' => $this->promo_score,
+            'email' => trim(strtolower($this->email))
         );
 
-        if ($this->name)
+        if ($this->name !== null)
             $data['name'] = $this->name;
 
-        if ($this->facebook_id)
-            $data['facebook_id_hash'] = $this->facebook_id;
+        if ($this->facebook_id !== null)
+            $data['facebook_id'] = $this->facebook_id;
         
-        if ($this->date_registered)
+        if ($this->date_registered !== null)
             $data['date_registered'] = $this->date_registered->format('c');
+
+        if ($this->promo_score !== null)
+            $data['promo_score'] = $this->promo_score;
         
         return $data;
     }

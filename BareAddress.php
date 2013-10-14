@@ -7,11 +7,6 @@ class BareAddress {
     /**
      * @var string
      */
-    public $name;
-    
-    /**
-     * @var string
-     */
     public $street;
 
     /**
@@ -37,12 +32,11 @@ class BareAddress {
     /**
      * @param array $data
      */
-    public function __construct(array $data) {   
-        $this->name = isset($data['name']) ? $data['name'] : null;
-        $this->street = isset($data['street']) ? $data['street'] : null;  
-        $this->city = isset($data['city']) ? $data['city'] : null;  
+    public function __construct(array $data) {
+        $this->street = isset($data['street']) ? $data['street'] : null;
+        $this->city = isset($data['city']) ? $data['city'] : null;
         $this->zipcode = $data['zipcode'];
-        $this->country = isset($data['country']) ? $data['country'] : 'cz';  
+        $this->country = isset($data['country']) ? $data['country'] : null;
         $this->phones_hash = $data['phones']; 
     }
 
@@ -72,15 +66,20 @@ class BareAddress {
      */
     public function serialize() {
         $data = array(
-            'name' => $this->name,
-            'street' => $this->street,
-            'city' => $this->city, 
-            'zipcode' => $this->zipcode,
-            'phones_hash' => array(),
-            'country' => $this->country
+            'zipcode' => $this->zipcode
         );
 
-        if($this->phones_hash) {
+        if ($this->street !== null)
+            $data['street'] = $this->street;
+
+        if ($this->city !== null)
+            $data['city'] = $this->city;
+
+        if ($this->country !== null)
+            $data['country'] = $this->country;
+
+        if($this->phones_hash !== null) {
+            $data['phones_hash'] = array();
             foreach ($this->phones_hash as $phone) {
                 $phone = $this->normalizePhone($phone);
                 if ($phone != null && !in_array($phone, $data['phones_hash']))

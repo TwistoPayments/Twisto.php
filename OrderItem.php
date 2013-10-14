@@ -63,9 +63,10 @@ class OrderItem {
         $this->price = isset($data['price']) ? $data['price'] : null;
         $this->price_vat = $data['price_vat'];
         $this->vat = $data['vat'];
-        $this->is_shipment = (isset($data['is_shipment']) and $data['is_shipment'] != 0) ? true : false;
-        $this->is_handling = (isset($data['is_handling']) and $data['is_handling'] != 0) ? true : false;
-        $this->is_payment = (isset($data['is_payment']) and $data['is_payment'] != 0) ? true : false;
+        $this->is_shipment = isset($data['is_shipment']) ? $data['is_shipment'] : null;
+        $this->is_handling = isset($data['is_handling']) ? $data['is_handling'] : null;
+        $this->is_payment = isset($data['is_payment']) ? $data['is_payment'] : null;
+        $this->is_discount = isset($data['is_discount']) ? $data['is_discount'] : null;
         $this->categories = isset($data['categories']) ? $data['categories'] : null;
         $this->product_id = isset($data['product_id']) ? $data['product_id'] : null;
     }
@@ -77,21 +78,36 @@ class OrderItem {
         $data = array(
             'quantity' => $this->quantity,
             'name' => $this->name,
-            'price' => $this->price,
             'price_vat' => $this->price_vat,
             'vat' => $this->vat,
-            'is_shipment' => ($this->is_shipment == false ? false : true),
-            'is_handling' => ($this->is_handling == false ? false : true),
-            'is_payment' => ($this->is_payment == false ? false : true),
-            'categories' => array(),
-            'product_id' => $this->product_id
         );
 
-        if($this->categories) {
+        if ($this->price !== null) {
+            $data['price'] = $this->price;
+        }
+
+        if ($this->is_shipment !== null)
+            $data['is_shipment'] = $this->is_shipment;
+
+        if ($this->is_handling !== null)
+            $data['is_handling'] = $this->is_handling;
+
+        if ($this->is_payment !== null)
+            $data['is_payment'] = $this->is_payment;
+
+        if ($this->is_discount !== null)
+            $data['is_discount'] = $this->is_discount;
+
+        if($this->categories !== null) {
+            $data['categories'] = array();
             foreach ($this->categories as $cat) {
                 if($cat != null)
                     $data['categories'][] = $cat;
             }
+        }
+
+        if ($this->product_id !== null) {
+            $data['product_id'] = $this->product_id;
         }
         
         return $data;

@@ -43,7 +43,7 @@ class Address {
         $this->city = $data['city'];  
         $this->zipcode = $data['zipcode'];
         $this->country = isset($data['country']) ? $data['country'] : null;
-        $this->phones = $data['phones']; 
+        $this->phones = isset($data['phones']) ? $data['phones'] : null;
     }
 
     /**
@@ -54,14 +54,14 @@ class Address {
             'name' => $this->name,
             'street' => $this->street,
             'city' => $this->city, 
-            'zipcode' => $this->zipcode,
-            'phones' => array()
+            'zipcode' => $this->zipcode
         );
 
-        if ($this->country)
+        if ($this->country !== null)
             $data['country'] = $this->country;
         
-        if($this->phones) {
+        if($this->phones !== null) {
+            $data['phones'] = array();
             foreach ($this->phones as $phone) {
                 if ($phone != null && !in_array($phone, $data['phones']))
                     $data['phones'][] = $phone;
