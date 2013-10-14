@@ -69,9 +69,7 @@ class BareOrder {
             'billing_address' => $this->billing_address->serialize(),
             'approx_total_price' => ($this->total_price_vat <= 500 ? 1 : 2),
             'is_paid' => $this->is_paid,
-            'is_shipped' => $this->is_shipped,
-            'is_delivered' => $this->is_delivered,
-            'is_returned' => $this->is_returned,
+            'is_shipped' => $this->is_shipped
         );
 
         if ($this->delivery_address !== null)
