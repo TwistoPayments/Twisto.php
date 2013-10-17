@@ -98,15 +98,20 @@ class Twisto {
      * @param string $transaction_id
      * @param Customer $customer
      * @param Order $order
+     * @param string $eshop_invoice_id
      * @return string invoice_id
      */
-    public function createInvoice($transaction_id, Customer $customer, Order $order) {
+    public function createInvoice($transaction_id, Customer $customer, Order $order, $eshop_invoice_id=null) {
         $data = array(
             'secret_key' => $this->secret_key,
             'transaction_id' => $transaction_id,
             'customer' => $customer->serialize(),
             'order' => $order->serialize()
         );
+
+        if (!$eshop_invoice_id !== null)
+            $data['eshop_invoice_id'] = $eshop_invoice_id;
+
         $response = post_json(TWISTO_API_URL.$this->public_key.'/invoice/', $data);
         return $response->invoice_id;
     }
