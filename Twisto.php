@@ -115,4 +115,18 @@ class Twisto {
         $response = post_json(TWISTO_API_URL.$this->public_key.'/invoice/', $data);
         return $response->invoice_id;
     }
+
+    /**
+     * Send activate invoice request to API
+     * @param string $invoice_id
+     * @return string pdf_url
+     */
+    public function activateInvoice($invoice_id) {
+        $data = array(
+            'secret_key' => $this->secret_key
+        );
+
+        $response = post_json(TWISTO_API_URL.$this->public_key.'/invoice/'.urlencode($invoice_id).'/activate/', $data);
+        return $response->pdf_url;
+    }
 }
