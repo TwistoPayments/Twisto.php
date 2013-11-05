@@ -109,7 +109,7 @@ class Twisto {
             'order' => $order->serialize()
         );
 
-        if (!$eshop_invoice_id !== null)
+        if ($eshop_invoice_id !== null)
             $data['eshop_invoice_id'] = $eshop_invoice_id;
 
         $response = post_json(TWISTO_API_URL.$this->public_key.'/invoice/', $data);
