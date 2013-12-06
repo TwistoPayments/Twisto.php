@@ -54,7 +54,7 @@ class BareOrder {
         $this->delivery_address = isset($data['delivery_address']) ? $data['delivery_address'] : null;
         $this->total_price_vat = $data['total_price_vat'];
         $this->is_paid = $data['is_paid'];
-        $this->is_shipped = $data['is_paid'];
+        $this->is_shipped = $data['is_shipped'];
         $this->is_delivered = isset($data['is_delivered']) ? $data['is_delivered'] : null;
         $this->is_returned = isset($data['is_returned']) ? $data['is_returned'] : null;
     }
