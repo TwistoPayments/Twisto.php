@@ -17,11 +17,6 @@ class OrderItem {
     /**
      * @var number
      */
-    public $price;
-
-    /**
-     * @var number
-     */
     public $price_vat;
 
     /**
@@ -60,7 +55,6 @@ class OrderItem {
     public function __construct(array $data) {
         $this->quantity = $data['quantity'];
         $this->name = $data['name'];
-        $this->price = isset($data['price']) ? $data['price'] : null;
         $this->price_vat = $data['price_vat'];
         $this->vat = $data['vat'];
         $this->is_shipment = isset($data['is_shipment']) ? $data['is_shipment'] : null;
@@ -81,10 +75,6 @@ class OrderItem {
             'price_vat' => $this->price_vat,
             'vat' => $this->vat,
         );
-
-        if ($this->price !== null) {
-            $data['price'] = $this->price;
-        }
 
         if ($this->is_shipment !== null)
             $data['is_shipment'] = $this->is_shipment;
