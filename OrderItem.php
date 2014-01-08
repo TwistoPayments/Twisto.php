@@ -28,11 +28,11 @@ class OrderItem {
      * @var bool
      */
     public $is_shipment;
-     
+
     /**
      * @var bool
      */
-    public $is_handling;
+    public $is_discount;
 
     /**
      * @var bool
@@ -58,7 +58,6 @@ class OrderItem {
         $this->price_vat = $data['price_vat'];
         $this->vat = $data['vat'];
         $this->is_shipment = isset($data['is_shipment']) ? $data['is_shipment'] : null;
-        $this->is_handling = isset($data['is_handling']) ? $data['is_handling'] : null;
         $this->is_payment = isset($data['is_payment']) ? $data['is_payment'] : null;
         $this->is_discount = isset($data['is_discount']) ? $data['is_discount'] : null;
         $this->categories = isset($data['categories']) ? $data['categories'] : null;
@@ -78,9 +77,6 @@ class OrderItem {
 
         if ($this->is_shipment !== null)
             $data['is_shipment'] = $this->is_shipment;
-
-        if ($this->is_handling !== null)
-            $data['is_handling'] = $this->is_handling;
 
         if ($this->is_payment !== null)
             $data['is_payment'] = $this->is_payment;
