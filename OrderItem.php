@@ -50,6 +50,11 @@ class OrderItem {
     public $product_id;
 
     /**
+     * @var string
+     */
+    public $ean_code;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data) {
@@ -62,6 +67,7 @@ class OrderItem {
         $this->is_discount = isset($data['is_discount']) ? $data['is_discount'] : null;
         $this->categories = isset($data['categories']) ? $data['categories'] : null;
         $this->product_id = isset($data['product_id']) ? $data['product_id'] : null;
+        $this->ean_code = isset($data['ean_code']) ? $data['ean_code'] : null;
     }
 
     /**
@@ -94,6 +100,10 @@ class OrderItem {
 
         if ($this->product_id !== null) {
             $data['product_id'] = $this->product_id;
+        }
+
+        if ($this->ean_code !== null){
+            $data['ean_code'] = $this->ean_code;
         }
         
         return $data;
