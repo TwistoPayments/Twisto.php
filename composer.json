@@ -1,0 +1,20 @@
+{
+	"name": "twisto-payments/twisto",
+	"type": "library",
+    "license": "BSD-3-Clause",
+    "description": "Library providing support for Twisto.cz payments service",
+    "keywords": ["twisto", "payments"],
+    "homepage": "https://github.com/TwistoPayments/Twisto.php",
+    "authors": [
+        {
+            "name": "Twisto payments a.s.",
+            "email": "dotaz@twisto.cz"
+        }
+    ],
+    "autoload": {
+        "classmap": ["/"]
+    },
+    "require": {
+        "php": ">=5.3.0"
+    }
+}
