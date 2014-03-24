@@ -1,6 +1,6 @@
 {
-	"name": "twisto-payments/twisto",
-	"type": "library",
+    "name": "twisto-payments/twisto",
+    "type": "library",
     "license": "BSD-3-Clause",
     "description": "Library providing support for Twisto.cz payments service",
     "keywords": ["twisto", "payments"],
