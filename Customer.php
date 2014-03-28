@@ -30,6 +30,11 @@ class Customer {
     public $promo_score;
 
     /**
+     * @var string
+     */
+    public $customer_id;
+
+    /**
      * @param array $data
      */
     public function __construct(array $data) {
@@ -38,6 +43,7 @@ class Customer {
         $this->facebook_id = isset($data['facebook_id']) ? $data['facebook_id'] : null;
         $this->date_registered = isset($data['date_registered']) ? (new \DateTime($data['date_registered'])) : null;
         $this->promo_score = isset($data['promo_score']) ? $data['promo_score'] : null;
+        $this->customer_id = isset($data['customer_id']) ? $data['customer_id'] : null;
     }
 
     /**
@@ -53,13 +59,16 @@ class Customer {
 
         if ($this->facebook_id !== null)
             $data['facebook_id'] = $this->facebook_id;
-        
+
         if ($this->date_registered !== null)
             $data['date_registered'] = $this->date_registered->format('c');
 
         if ($this->promo_score !== null)
             $data['promo_score'] = $this->promo_score;
-        
+
+        if ($this->customer_id !== null)
+            $data['customer_id'] = $this->customer_id;
+
         return $data;
     }
 }
