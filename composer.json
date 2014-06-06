@@ -12,7 +12,9 @@
         }
     ],
     "autoload": {
-        "classmap": ["/"]
+        "psr-4": {
+            "Twisto\\": "src/Twisto/"
+        }
     },
     "require": {
         "php": ">=5.3.0"

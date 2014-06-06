@@ -2,24 +2,27 @@
 namespace Twisto;
 
 
-class SharedDbResponse {
+class SharedDbResponse
+{
     /**
      * Set up streaming API
      */
-    function __construct() {
+    function __construct()
+    {
         set_time_limit(0);
         @ob_end_clean();
         header("Content-Type: text/plain");
     }
 
     /**
-     * @param BareCustomer $customer
-     * @param BareOrder[] $orders
+     * @param SharedDbCustomer $customer
+     * @param SharedDbOrder[] $orders
      */
-    function add(BareCustomer $customer, array $orders) {
+    function add(SharedDbCustomer $customer, array $orders)
+    {
         echo json_encode(array(
             'customer' => $customer->serialize(),
-            'orders' => array_map(function($order) {
+            'orders' => array_map(function (SharedDbOrder $order) {
                 return $order->serialize();
             }, $orders)
         ));

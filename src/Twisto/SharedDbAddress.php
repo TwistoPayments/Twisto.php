@@ -3,7 +3,8 @@
 namespace Twisto;
 
 
-class BareAddress {
+class SharedDbAddress
+{
     /**
      * @var string
      */
@@ -23,21 +24,22 @@ class BareAddress {
      * @var string
      */
     public $country;
-    
+
     /**
-    * @var array
-    */
+     * @var array
+     */
     public $phones;
 
     /**
      * @param array $data
      */
-    public function __construct(array $data) {
+    public function __construct(array $data)
+    {
         $this->street = isset($data['street']) ? $data['street'] : null;
         $this->city = isset($data['city']) ? $data['city'] : null;
         $this->zipcode = $data['zipcode'];
         $this->country = isset($data['country']) ? $data['country'] : null;
-        $this->phones_hash = $data['phones']; 
+        $this->phones_hash = $data['phones'];
     }
 
     /**
@@ -48,12 +50,12 @@ class BareAddress {
     {
         $phone = preg_replace('/(?<=.)\+/', '', $phone);
         $phone = preg_replace('/[^0-9+]/', '', $phone);
-        
+
         // prepend country dialing code when it isn't included
         if (strlen($phone) > 0 && $phone[0] != '+') {
             $phone = '+420' . $phone;
         }
-        
+
         if (!preg_match('/^\+[0-9]{12}$/', $phone)) {
             return null;
         }
@@ -64,7 +66,8 @@ class BareAddress {
     /**
      * @return array
      */
-    public function serialize() {
+    public function serialize()
+    {
         $data = array(
             'zipcode' => $this->zipcode
         );
@@ -78,7 +81,7 @@ class BareAddress {
         if ($this->country !== null)
             $data['country'] = $this->country;
 
-        if($this->phones_hash !== null) {
+        if ($this->phones_hash !== null) {
             $data['phones_hash'] = array();
             foreach ($this->phones_hash as $phone) {
                 $phone = $this->normalizePhone($phone);

@@ -1,0 +1,168 @@
+<?php
+namespace Twisto;
+
+
+class Invoice
+{
+    /** @var \Twisto\Twisto */
+    private $twisto;
+
+    /** @var string */
+    public $invoice_id;
+
+    /** @var string */
+    public $eshop_invoice_id;
+
+    /** @var string */
+    public $customer_email;
+
+    /** @var Address */
+    public $billing_address;
+
+    /** @var Address */
+    public $delivery_address;
+
+    /** @var \DateTime */
+    public $date_created;
+
+    /** @var \DateTime */
+    public $date_returned;
+
+    /** @var \DateTime */
+    public $date_cancelled;
+
+    /** @var \DateTime */
+    public $date_activated;
+
+    /** @var string */
+    public $pdf_url;
+
+    /** @var float */
+    public $total_price_vat;
+
+    /** @var Item[] */
+    public $items;
+
+    /**
+     * @param Twisto $twisto
+     * @param string $invoice_id
+     */
+    public function __construct(Twisto $twisto, $invoice_id)
+    {
+        $this->twisto = $twisto;
+        $this->invoice_id = $invoice_id;
+    }
+
+    /**
+     * Fetch invoice data from API
+     */
+    public function get()
+    {
+        $data = $this->twisto->requestJson('GET', 'invoice/' . urlencode($this->invoice_id) . '/');
+        $this->deserialize($data);
+    }
+
+    /**
+     * Perform cancel invoice API request
+     */
+    public function cancel()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/cancel/');
+        $this->deserialize($data);
+    }
+
+    /**
+     * Perform activate invoice API request
+     */
+    public function activate()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/activate/');
+        $this->deserialize($data);
+    }
+
+    /**
+     * Save invoice items
+     */
+    public function save()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/edit/', $this->serialize());
+        $this->deserialize($data);
+    }
+
+    /**
+     * Create new invoice using transaction_id from check
+     * @param Twisto $twisto
+     * @param string $transaction_id
+     * @param string $eshop_invoice_id
+     * @return Invoice
+     */
+    public static function create(Twisto $twisto, $transaction_id, $eshop_invoice_id = null)
+    {
+        $data = array(
+            'transaction_id' => $transaction_id
+        );
+
+        if ($eshop_invoice_id !== null) {
+            $data['eshop_invoice_id'] = $eshop_invoice_id;
+        }
+
+        $data = $twisto->requestJson('POST', 'invoice/', $data);
+        $invoice = new Invoice($twisto, null);
+        $invoice->deserialize($data);
+        return $invoice;
+    }
+
+    /**
+     * Perform invoice return API request
+     * @param Twisto $twisto
+     * @param string $invoice_id
+     * @param array $items
+     * @return Invoice
+     */
+    public static function returnItems(Twisto $twisto, $invoice_id, $items)
+    {
+        $data = array(
+            'items' => $items
+        );
+
+        $data = $twisto->requestJson('POST', 'invoice/' . urlencode($invoice_id) . '/return/', $data);
+        return new self($twisto, $data);
+    }
+
+    private function deserialize($data)
+    {
+        $this->invoice_id = $data['invoice_id'];
+        $this->eshop_invoice_id = $data['eshop_invoice_id'];
+        $this->customer_email = $data['customer_email'];
+        $this->billing_address = Address::deserialize($data['billing_address']);
+        $this->delivery_address = Address::deserialize($data['delivery_address']);
+
+        if ($data['date_created'])
+            $this->date_created = new \DateTime($data['date_created']);
+
+        if ($data['date_returned'])
+            $this->date_returned = new \DateTime($data['date_returned']);
+
+        if ($data['date_cancelled'])
+            $this->date_cancelled = new \DateTime($data['date_cancelled']);
+
+        if ($data['date_activated'])
+            $this->date_activated = new \DateTime($data['date_activated']);
+
+        $this->pdf_url = $data['pdf_url'];
+        $this->total_price_vat = (float)$data['total_price_vat'];
+
+        $this->items = array_map(function($item) {
+            return Item::deserialize($item);
+        }, $data['items']);
+    }
+
+    private function serialize()
+    {
+        return array(
+            'items' => array_map(function(Item $item) {
+                return $item->serialize();
+            }, $this->items)
+        );
+    }
+}
