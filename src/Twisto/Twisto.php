@@ -107,8 +107,7 @@ class Twisto
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json",
-            "Authorization: {$this->secret_key}",
-            "Authorization: {$this->public_key}"
+            "Authorization: {$this->public_key},{$this->secret_key}"
         ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL, $this->api_url . $url);
