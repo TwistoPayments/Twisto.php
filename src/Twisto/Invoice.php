@@ -115,7 +115,6 @@ class Invoice
     /**
      * Perform invoice return API request
      * @param ItemReturn[] $items
-     * @return Invoice
      */
     public function returnItems($items)
     {
@@ -124,6 +123,15 @@ class Invoice
         );
 
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/', $data);
+        $this->deserialize($data);
+    }
+
+    /**
+     * Perform invoice return all API request
+     */
+    public function returnAll()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/all/');
         $this->deserialize($data);
     }
 
