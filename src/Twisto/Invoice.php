@@ -114,19 +114,17 @@ class Invoice
 
     /**
      * Perform invoice return API request
-     * @param Twisto $twisto
-     * @param string $invoice_id
-     * @param array $items
+     * @param ItemReturn[] $items
      * @return Invoice
      */
-    public static function returnItems(Twisto $twisto, $invoice_id, $items)
+    public function returnItems($items)
     {
         $data = array(
             'items' => $items
         );
 
-        $data = $twisto->requestJson('POST', 'invoice/' . urlencode($invoice_id) . '/return/', $data);
-        return new self($twisto, $data);
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/', $data);
+        $this->deserialize($data);
     }
 
     private function deserialize($data)

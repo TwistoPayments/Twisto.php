@@ -6,6 +6,7 @@ require_once TWISTO_PATH . 'Customer.php';
 require_once TWISTO_PATH . 'Error.php';
 require_once TWISTO_PATH . 'Invoice.php';
 require_once TWISTO_PATH . 'Item.php';
+require_once TWISTO_PATH . 'ItemReturn.php';
 require_once TWISTO_PATH . 'Order.php';
 require_once TWISTO_PATH . 'SharedDbAddress.php';
 require_once TWISTO_PATH . 'SharedDbCustomer.php';
