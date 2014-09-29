@@ -165,11 +165,17 @@ class Invoice
 
     private function serialize()
     {
-        return array(
-            'eshop_invoice_id' => $this->eshop_invoice_id,
-            'items' => array_map(function(Item $item) {
+        $data = array();
+
+        if ($this->eshop_invoice_id !== null)
+            $data['eshop_invoice_id'] = $this->eshop_invoice_id;
+
+        if ($this->items !== null) {
+            $data['items'] = array_map(function(Item $item) {
                 return $item->serialize();
-            }, $this->items)
-        );
+            }, $this->items);
+        }
+
+        return $data;
     }
 }
