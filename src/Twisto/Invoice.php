@@ -34,6 +34,9 @@ class Invoice
     /** @var \DateTime */
     public $date_activated;
 
+    /** @var \DateTime */
+    public $date_paid;
+
     /** @var string */
     public $pdf_url;
 
@@ -154,6 +157,9 @@ class Invoice
 
         if ($data['date_activated'])
             $this->date_activated = new \DateTime($data['date_activated']);
+
+        if ($data['date_paid'])
+            $this->date_paid = new \DateTime($data['date_paid']);
 
         $this->pdf_url = $data['pdf_url'];
         $this->total_price_vat = (float)$data['total_price_vat'];
