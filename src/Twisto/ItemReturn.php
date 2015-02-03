@@ -12,11 +12,13 @@ class ItemReturn
     /**
      * @param string $product_id
      * @param int $quantity
+     * @param float $price_vat
      */
-    function __construct($product_id, $quantity)
+    function __construct($product_id, $quantity, $price_vat = null)
     {
         $this->product_id = $product_id;
         $this->quantity = (int)$quantity;
+        $this->price_vat = $price_vat;
     }
 
     /**
@@ -24,9 +26,14 @@ class ItemReturn
      */
     public function serialize()
     {
-        return array(
+        $data = array(
             'product_id' => $this->product_id,
             'quantity' => $this->quantity
         );
+
+        if ($this->price_vat !== null)
+            $data['price_vat'] = $this->price_vat;
+
+        return $data;
     }
 }
