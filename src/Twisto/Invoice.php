@@ -118,12 +118,21 @@ class Invoice
     /**
      * Perform invoice return API request
      * @param ItemReturn[] $items
+     * @param ItemDiscountReturn[] $discounts
      */
-    public function returnItems($items)
+    public function returnItems($items, $discounts = null)
     {
         $data = array(
-            'items' => $items
+            'items' => array_map(function(ItemReturn $item) {
+                return $item->serialize();
+            }, $items)
         );
+
+        if ($discounts !== null) {
+            $data['discounts'] = array_map(function(ItemDiscountReturn $item) {
+                return $item->serialize();
+            }, $discounts);
+        }
 
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/', $data);
         $this->deserialize($data);
