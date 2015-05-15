@@ -38,7 +38,7 @@ class Item
     public $issn_code;
 
     /** @var int */
-    public $heureka_category_id;
+    public $heureka_category;
 
     /**
      * @param int $type
@@ -50,9 +50,9 @@ class Item
      * @param string $ean_code
      * @param string $isbn_code
      * @param string $issn_code
-     * @param int $heureka_category_id
+     * @param int $heureka_category
      */
-    function __construct($type, $name, $product_id, $quantity, $price_vat, $vat, $ean_code=null, $isbn_code=null, $issn_code=null, $heureka_category_id=null)
+    function __construct($type, $name, $product_id, $quantity, $price_vat, $vat, $ean_code=null, $isbn_code=null, $issn_code=null, $heureka_category=null)
     {
         $this->type = (int)$type;
         $this->name = $name;
@@ -63,7 +63,7 @@ class Item
         $this->ean_code = $ean_code;
         $this->isbn_code = $isbn_code;
         $this->issn_code = $issn_code;
-        $this->heureka_category_id = $heureka_category_id;
+        $this->heureka_category = $heureka_category;
     }
 
     /**
@@ -81,12 +81,12 @@ class Item
             'ean_code' => $this->ean_code,
             'isbn_code' => $this->isbn_code,
             'issn_code' => $this->issn_code,
-            'heureka_category_id' => $this->heureka_category_id
+            'heureka_category' => $this->heureka_category
         );
     }
 
     public static function deserialize($data)
     {
-        return new self($data['type'], $data['name'], $data['product_id'], $data['quantity'], $data['price_vat'], $data['vat'], $data['ean_code'], $data['isbn_code'], $data['issn_code'], $data['heureka_category_id']);
+        return new self($data['type'], $data['name'], $data['product_id'], $data['quantity'], $data['price_vat'], $data['vat'], $data['ean_code'], $data['isbn_code'], $data['issn_code'], $data['heureka_category']);
     }
 }
