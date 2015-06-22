@@ -8,10 +8,10 @@ class Order
     /** @var \DateTime */
     public $date_created;
 
-    /** @var Address */
+    /** @var BaseAddress */
     public $billing_address;
 
-    /** @var Address */
+    /** @var BaseAddress */
     public $delivery_address;
 
     /** @var float */
@@ -22,12 +22,12 @@ class Order
 
     /**
      * @param \DateTime $date_created
-     * @param Address $billing_address
-     * @param Address $delivery_address
+     * @param BaseAddress $billing_address
+     * @param BaseAddress $delivery_address
      * @param float $total_price_vat
      * @param Item[] $items
      */
-    public function __construct(\DateTime $date_created, Address $billing_address, Address $delivery_address, $total_price_vat, $items)
+    public function __construct(\DateTime $date_created, BaseAddress $billing_address, BaseAddress $delivery_address, $total_price_vat, $items)
     {
         $this->date_created = $date_created;
         $this->billing_address = $billing_address;

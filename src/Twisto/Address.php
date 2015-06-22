@@ -3,7 +3,7 @@
 namespace Twisto;
 
 
-class Address
+class Address implements BaseAddress
 {
     /** @var string */
     public $name;

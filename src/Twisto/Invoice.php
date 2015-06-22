@@ -16,10 +16,10 @@ class Invoice
     /** @var string */
     public $customer_email;
 
-    /** @var Address */
+    /** @var BaseAddress */
     public $billing_address;
 
-    /** @var Address */
+    /** @var BaseAddress */
     public $delivery_address;
 
     /** @var \DateTime */
@@ -152,8 +152,20 @@ class Invoice
         $this->invoice_id = $data['invoice_id'];
         $this->eshop_invoice_id = $data['eshop_invoice_id'];
         $this->customer_email = $data['customer_email'];
-        $this->billing_address = Address::deserialize($data['billing_address']);
-        $this->delivery_address = Address::deserialize($data['delivery_address']);
+
+        if ($data['billing_address']['type'] == BaseAddress::TYPE_SHORT) {
+            $this->billing_address = ShortAddress::deserialize($data['billing_address']);
+        }
+        else {
+            $this->billing_address = Address::deserialize($data['billing_address']);
+        }
+
+        if ($data['delivery_address']['type'] == BaseAddress::TYPE_SHORT) {
+            $this->delivery_address = ShortAddress::deserialize($data['delivery_address']);
+        }
+        else {
+            $this->delivery_address = Address::deserialize($data['delivery_address']);
+        }
 
         if ($data['date_created'])
             $this->date_created = new \DateTime($data['date_created']);
