@@ -1,8 +1,8 @@
 <?php
 define('TWISTO_PATH', dirname(__FILE__) . '/Twisto/');
 
-require_once TWISTO_PATH . 'Address.php';
 require_once TWISTO_PATH . 'BaseAddress.php';
+require_once TWISTO_PATH . 'Address.php';
 require_once TWISTO_PATH . 'Customer.php';
 require_once TWISTO_PATH . 'Error.php';
 require_once TWISTO_PATH . 'Invoice.php';
