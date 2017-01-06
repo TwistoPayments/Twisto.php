@@ -55,9 +55,8 @@ class Twisto
         $bin_key = pack("H*", substr($this->secret_key, 8));
         $aes_key = substr($bin_key, 0, 16);
         $salt = substr($bin_key, 16, 16);
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_DEV_URANDOM);
-        $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $aes_key, $data, MCRYPT_MODE_CBC, $iv);
+        $iv = openssl_random_pseudo_bytes(16);
+        $encrypted = openssl_encrypt($data, 'aes-128-cbc', $aes_key, true, $iv);
         $digest = hash_hmac('sha256', $data . $iv, $salt, true);
         return base64_encode($iv . $digest . $encrypted);
     }
