@@ -10,6 +10,9 @@ class Invoice
     /** @var string */
     public $invoice_id;
 
+    /** @var string **/
+    public $parent_invoice_id;
+
     /** @var string */
     public $eshop_invoice_id;
 
@@ -110,6 +113,26 @@ class Invoice
         }
 
         $data = $twisto->requestJson('POST', 'invoice/', $data);
+        $invoice = new Invoice($twisto, null);
+        $invoice->deserialize($data);
+        return $invoice;
+    }
+
+    /**
+     * Split invoice to new one
+     * @param ItemSplit[] $items
+     * @return Invoice
+     */
+    public static function splitItems($items)
+    {
+        // ItemSplit is (for now) same as invoice to split
+        $data = array(
+            'items' => array_map(function(ItemReturn $item) {
+                return $item->serialize();
+            }, $items)
+        );
+
+        $data = $twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
         $invoice = new Invoice($twisto, null);
         $invoice->deserialize($data);
         return $invoice;
