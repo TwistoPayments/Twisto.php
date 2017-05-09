@@ -10,6 +10,9 @@ class Invoice
     /** @var string */
     public $invoice_id;
 
+    /** @var string **/
+    public $parent_invoice_id;
+
     /** @var string */
     public $eshop_invoice_id;
 
@@ -115,6 +118,21 @@ class Invoice
         return $invoice;
     }
 
+
+    public static function NEZNAMAsplitItems($items)
+    {
+        $data = array(
+            'items' => array_map(function(ItemSplit $item) {
+                return $item->serialize();
+            }, $items)
+        );
+
+        $data = $twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
+        $invoice = new Invoice($twisto, null);
+        $invoice->deserialize($data);
+        return $invoice;
+    }
+
     /**
      * Perform invoice return API request
      * @param ItemReturn[] $items
@@ -145,6 +163,41 @@ class Invoice
     {
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/all/');
         $this->deserialize($data);
+    }
+
+
+    /**
+     * Split invoice to new one
+     * @param ItemSplit[] $items
+     * @return Invoice
+     */
+    public function split()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $this->serialize_split());
+        $this->deserialize_split($data);
+        return $invoice;
+    }
+
+    private function serialize_split()
+    {
+        $data = array();
+
+        if ($this->items !== null) {
+            $data['items'] = array_map(function(ItemSplit $item) {
+                return $item->split();
+            }, $this->items);
+        }
+
+        return $data;
+    }
+
+    private function deserialize_split($data)
+    {
+        $this->invoice_id = $data['invoice_id'];
+
+        $this->items = array_map(function($item) {
+            return ItemSplit::deserialize($item);
+        }, $data['items']);
     }
 
     private function deserialize($data)
