@@ -4,7 +4,7 @@
     "license": "BSD-3-Clause",
     "description": "Library providing support for Twisto.cz payments service",
     "keywords": ["twisto", "payments"],
-    "homepage": "https://github.com/TwistoPayments/Twisto.php",
+    "homepage": "https://github.com/vehrlich/Twisto.php",
     "authors": [
         {
             "name": "Twisto payments a.s.",
