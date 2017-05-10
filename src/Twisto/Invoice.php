@@ -118,25 +118,6 @@ class Invoice
         return $invoice;
     }
 
-    /**
-     * Split invoice to new one
-     * @param ItemSplit[] $items
-     * @return Invoice
-     */
-    public static function splitItems($items)
-    {
-        // ItemSplit is (for now) same as invoice to split
-        $data = array(
-            'items' => array_map(function(ItemReturn $item) {
-                return $item->serialize();
-            }, $items)
-        );
-
-        $data = $twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
-        $invoice = new Invoice($twisto, null);
-        $invoice->deserialize($data);
-        return $invoice;
-    }
 
     /**
      * Perform invoice return API request
@@ -168,6 +149,41 @@ class Invoice
     {
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/all/');
         $this->deserialize($data);
+    }
+
+
+    /**
+     * Split invoice to new one
+     * @param ItemSplit[] $items
+     * @return Invoice
+     */
+    public function split()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $this->serialize_split());
+        $this->deserialize_split($data);
+        return $invoice;
+    }
+
+    private function serialize_split()
+    {
+        $data = array();
+
+        if ($this->items !== null) {
+            $data['items'] = array_map(function(ItemSplit $item) {
+                return $item->split();
+            }, $this->items);
+        }
+
+        return $data;
+    }
+
+    private function deserialize_split($data)
+    {
+        $this->invoice_id = $data['invoice_id'];
+
+        $this->items = array_map(function($item) {
+            return ItemSplit::deserialize($item);
+        }, $data['items']);
     }
 
     private function deserialize($data)

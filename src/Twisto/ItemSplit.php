@@ -29,4 +29,9 @@ class ItemSplit
             'quantity' => $this->quantity
         );
     }
+
+    public static function deserialize($data)
+    {
+        return new self($data['product_id'], $data['quantity']);
+    }
 }
