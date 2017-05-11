@@ -170,10 +170,9 @@ class Invoice
 
         if ($this->items !== null) {
             $data['items'] = array_map(function(ItemSplit $item) {
-                return $item->split();
+                return $item->serialize();
             }, $this->items);
         }
-
         return $data;
     }
 
