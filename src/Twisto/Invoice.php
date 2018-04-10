@@ -11,7 +11,7 @@ class Invoice
     public $invoice_id;
 
     /** @var string **/
-    public $parent_invoice_id;
+    public $parent_id;
 
     /** @var string */
     public $eshop_invoice_id;
@@ -169,9 +169,19 @@ class Invoice
         $data = array();
 
         if ($this->items !== null) {
+            /*array_filter($this->items,function(ItemSplit $item) {
+                return $item->quantity;
+            });*/
+
+            $items = array();
+            foreach($this->items as $item) {
+                if ($item->quantity >= 1) {
+                    array_push($items, $item);
+                }
+            }
             $data['items'] = array_map(function(ItemSplit $item) {
                 return $item->serialize();
-            }, $this->items);
+            }, $items);
         }
         return $data;
     }
