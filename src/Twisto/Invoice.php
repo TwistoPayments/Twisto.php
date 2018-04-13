@@ -11,7 +11,7 @@ class Invoice
     public $invoice_id;
 
     /** @var string **/
-    public $parent_id;
+    public $parent_invoice_id;
 
     /** @var string */
     public $eshop_invoice_id;
@@ -155,51 +155,28 @@ class Invoice
     /**
      * Split invoice to new one
      * @param ItemSplit[] $items
-     * @return Invoice
      */
-    public function split()
+    public function splitItems($items)
     {
-        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $this->serialize_split());
-        $this->deserialize_split($data);
-        return $invoice;
-    }
-
-    private function serialize_split()
-    {
-        $data = array();
-
-        if ($this->items !== null) {
-            /*array_filter($this->items,function(ItemSplit $item) {
-                return $item->quantity;
-            });*/
-
-            $items = array();
-            foreach($this->items as $item) {
-                if ($item->quantity >= 1) {
-                    array_push($items, $item);
-                }
-            }
-            $data['items'] = array_map(function(ItemSplit $item) {
+        $data = array(
+            'items' => array_map(function(ItemSplit $item) {
                 return $item->serialize();
-            }, $items);
-        }
-        return $data;
+            }, $items)
+        );
+
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
+        $this->deserialize($data);
     }
 
-    private function deserialize_split($data)
-    {
-        $this->invoice_id = $data['invoice_id'];
-
-        $this->items = array_map(function($item) {
-            return ItemSplit::deserialize($item);
-        }, $data['items']);
-    }
 
     private function deserialize($data)
     {
         $this->invoice_id = $data['invoice_id'];
         $this->eshop_invoice_id = $data['eshop_invoice_id'];
         $this->customer_email = $data['customer_email'];
+
+        if ($data['parent_invoice_id'])
+            $this->parent_invoice_id = $data['parent_invoice_id'];
 
         if ($data['billing_address']['type'] == BaseAddress::TYPE_SHORT) {
             $this->billing_address = ShortAddress::deserialize($data['billing_address']);
