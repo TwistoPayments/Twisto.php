@@ -68,6 +68,12 @@ class Invoice
         $this->deserialize($data);
     }
 
+
+    public function load_json($json_data)
+    {
+        $this->deserialize($json_data);
+    }
+
     /**
      * Perform cancel invoice API request
      */
@@ -155,6 +161,7 @@ class Invoice
     /**
      * Split invoice to new one
      * @param ItemSplit[] $items
+     * @return JSON response with new invoice
      */
     public function splitItems($items)
     {
@@ -165,7 +172,7 @@ class Invoice
         );
 
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
-        $this->deserialize($data);
+        return $data;
     }
 
 
