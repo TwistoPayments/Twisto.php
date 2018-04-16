@@ -69,7 +69,7 @@ class Invoice
     }
 
 
-    public function load_json($json_data)
+    public function loadJson($json_data)
     {
         $this->deserialize($json_data);
     }
