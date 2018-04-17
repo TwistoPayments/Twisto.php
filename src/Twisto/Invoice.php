@@ -53,10 +53,14 @@ class Invoice
      * @param Twisto $twisto
      * @param string $invoice_id
      */
-    public function __construct(Twisto $twisto, $invoice_id)
+    public function __construct(Twisto $twisto, $invoice_id, $json_data = null)
     {
         $this->twisto = $twisto;
         $this->invoice_id = $invoice_id;
+
+        if ($json_data != null){
+            $this->deserialize($json_data);
+        }
     }
 
     /**
@@ -68,11 +72,6 @@ class Invoice
         $this->deserialize($data);
     }
 
-
-    public function loadJson($json_data)
-    {
-        $this->deserialize($json_data);
-    }
 
     /**
      * Perform cancel invoice API request
@@ -172,7 +171,7 @@ class Invoice
         );
 
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
-        return $data;
+        return new Invoice($this->twisto, $data['invoice_id'], $data);
     }
 
 
