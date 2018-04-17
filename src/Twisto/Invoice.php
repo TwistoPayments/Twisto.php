@@ -180,9 +180,7 @@ class Invoice
         $this->invoice_id = $data['invoice_id'];
         $this->eshop_invoice_id = $data['eshop_invoice_id'];
         $this->customer_email = $data['customer_email'];
-
-        if ($data['parent_invoice_id'])
-            $this->parent_invoice_id = $data['parent_invoice_id'];
+        $this->parent_invoice_id = $data['parent_invoice_id'];
 
         if ($data['billing_address']['type'] == BaseAddress::TYPE_SHORT) {
             $this->billing_address = ShortAddress::deserialize($data['billing_address']);
