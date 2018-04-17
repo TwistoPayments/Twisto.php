@@ -53,14 +53,10 @@ class Invoice
      * @param Twisto $twisto
      * @param string $invoice_id
      */
-    public function __construct(Twisto $twisto, $invoice_id, $json_data = null)
+    public function __construct(Twisto $twisto, $invoice_id)
     {
         $this->twisto = $twisto;
         $this->invoice_id = $invoice_id;
-
-        if ($json_data != null){
-            $this->deserialize($json_data);
-        }
     }
 
     /**
@@ -171,7 +167,11 @@ class Invoice
         );
 
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
-        return new Invoice($this->twisto, $data['invoice_id'], $data);
+        $split_invoice = new Invoice($this->twisto, null);
+        $split_invoice->deserialize($data);
+        $this->get();
+
+        return $split_invoice;
     }
 
 
