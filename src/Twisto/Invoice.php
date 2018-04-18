@@ -46,6 +46,9 @@ class Invoice
     /** @var Item[] */
     public $items;
 
+    /** @var bool */
+    public $has_account;
+
     /**
      * @param Twisto $twisto
      * @param string $invoice_id
@@ -188,6 +191,8 @@ class Invoice
         $this->items = array_map(function($item) {
             return Item::deserialize($item);
         }, $data['items']);
+
+        $this->has_account = (bool)$data['has_account'];
     }
 
     private function serialize()
