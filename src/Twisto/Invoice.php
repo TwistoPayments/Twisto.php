@@ -10,6 +10,9 @@ class Invoice
     /** @var string */
     public $invoice_id;
 
+    /** @var string **/
+    public $parent_invoice_id;
+
     /** @var string */
     public $eshop_invoice_id;
 
@@ -68,6 +71,7 @@ class Invoice
         $this->deserialize($data);
     }
 
+
     /**
      * Perform cancel invoice API request
      */
@@ -118,6 +122,7 @@ class Invoice
         return $invoice;
     }
 
+
     /**
      * Perform invoice return API request
      * @param ItemReturn[] $items
@@ -150,11 +155,35 @@ class Invoice
         $this->deserialize($data);
     }
 
+
+    /**
+     * Split invoice to new one
+     * @param ItemSplit[] $items
+     * @return JSON response with new invoice
+     */
+    public function splitItems($items)
+    {
+        $data = array(
+            'items' => array_map(function(ItemSplit $item) {
+                return $item->serialize();
+            }, $items)
+        );
+
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/split/', $data);
+        $split_invoice = new Invoice($this->twisto, null);
+        $split_invoice->deserialize($data);
+        $this->get();
+
+        return $split_invoice;
+    }
+
+
     private function deserialize($data)
     {
         $this->invoice_id = $data['invoice_id'];
         $this->eshop_invoice_id = $data['eshop_invoice_id'];
         $this->customer_email = $data['customer_email'];
+        $this->parent_invoice_id = $data['parent_invoice_id'];
 
         if ($data['billing_address']['type'] == BaseAddress::TYPE_SHORT) {
             $this->billing_address = ShortAddress::deserialize($data['billing_address']);

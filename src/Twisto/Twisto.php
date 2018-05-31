@@ -121,7 +121,6 @@ class Twisto
         if (curl_errno($curl)) {
             throw new Error('Curl error: ' . curl_error($curl));
         }
-
         $info = curl_getinfo($curl);
         if ($info['http_code'] != 200) {
             throw new Error('API responded with wrong status code (' . $info['http_code'] . ')', json_decode($response));
