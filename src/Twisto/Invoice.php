@@ -154,8 +154,20 @@ class Invoice
         $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/return/all/');
         $this->deserialize($data);
     }
-
-
+    
+    /**
+     * Refunds specified amount from the invoice
+     * @param float amount to refund
+     */
+    public function refund($amount)
+    {
+        $data = array(
+            'amount' => (float)$amount
+        );
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/refund/', $data);
+        $this->deserialize($data);
+    }
+    
     /**
      * Split invoice to new one
      * @param ItemSplit[] $items
