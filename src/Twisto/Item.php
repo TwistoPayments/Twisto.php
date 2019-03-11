@@ -54,8 +54,9 @@ class Item
      * @param string $isbn_code
      * @param string $issn_code
      * @param int $heureka_category
+     * @param int $category
      */
-    function __construct($type, $name, $product_id, $quantity, $price_vat, $vat, $ean_code=null, $isbn_code=null, $issn_code=null, $heureka_category=null, $is_virtual=null)
+    function __construct($type, $name, $product_id, $quantity, $price_vat, $vat, $ean_code=null, $isbn_code=null, $issn_code=null, $heureka_category=null, $category=null, $is_virtual=null)
     {
         $this->type = (int)$type;
         $this->name = $name;
@@ -67,6 +68,7 @@ class Item
         $this->isbn_code = $isbn_code;
         $this->issn_code = $issn_code;
         $this->heureka_category = $heureka_category;
+        $this->category = $category;
         $this->is_virtual = $is_virtual;
     }
 
@@ -86,6 +88,7 @@ class Item
             'isbn_code' => $this->isbn_code,
             'issn_code' => $this->issn_code,
             'heureka_category' => $this->heureka_category,
+            'category' => $this->category,
             'is_virtual' => $this->is_virtual
         );
     }
@@ -103,6 +106,7 @@ class Item
             $data['isbn_code'],
             $data['issn_code'],
             $data['heureka_category'],
+            $data['category'],
             $data['is_virtual']
         );
     }
