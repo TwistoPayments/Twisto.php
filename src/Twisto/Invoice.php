@@ -52,6 +52,9 @@ class Invoice
     /** @var bool */
     public $has_account;
 
+    /** @var float|null */
+    public $paid_to_merchant_amount;
+
     /**
      * @param Twisto $twisto
      * @param string $invoice_id
@@ -228,6 +231,7 @@ class Invoice
 
         $this->pdf_url = $data['pdf_url'];
         $this->total_price_vat = (float)$data['total_price_vat'];
+        $this->paid_to_merchant_amount = $data['paid_to_merchant_amount'];
 
         $this->items = array_map(function($item) {
             return Item::deserialize($item);
