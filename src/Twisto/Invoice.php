@@ -190,6 +190,24 @@ class Invoice
     }
 
 
+    /**
+     * Perform report invoice return API request
+     */
+    public function report_return()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/report_return/');
+        $this->deserialize($data);
+    }
+
+    /**
+     * Perform cancel report invoice return API request
+     */
+    public function cancel_report_return()
+    {
+        $data = $this->twisto->requestJson('POST', 'invoice/' . urlencode($this->invoice_id) . '/report_return/cancel/');
+        $this->deserialize($data);
+    }
+
     private function deserialize($data)
     {
         $this->invoice_id = $data['invoice_id'];
